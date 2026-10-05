@@ -1,0 +1,43 @@
+// Automatic Soil Moisture Watering System
+
+const int soilSensor = A0;
+const int relayPin = 7;
+
+// Adjust this value after testing your sensor
+const int dryThreshold = 600;
+
+void setup() {
+  Serial.begin(9600);
+
+  pinMode(soilSensor, INPUT);
+  pinMode(relayPin, OUTPUT);
+
+  // Relay OFF initially
+  digitalWrite(relayPin, HIGH);
+}
+
+void loop() {
+
+  int sensorValue = analogRead(soilSensor);
+
+  Serial.print("Soil Sensor Value: ");
+  Serial.println(sensorValue);
+
+  // Higher value = dry soil
+  if (sensorValue > dryThreshold) {
+
+    // Soil is dry → Pump ON
+    digitalWrite(relayPin, LOW);
+
+    Serial.println("SOIL DRY -> PUMP ON");
+  }
+  else {
+
+    // Soil has enough moisture → Pump OFF
+    digitalWrite(relayPin, HIGH);
+
+    Serial.println("SOIL MOIST -> PUMP OFF");
+  }
+
+  delay(1000);
+}
